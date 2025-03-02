@@ -1,0 +1,62 @@
+Summary Report
+
+1.	Summary
+a.	Describe your unit testing approach for each of the three features.
+i.	To what extent was your approach aligned to the software requirements? Support your claims with specific evidence.  A good example how I how I followed the software requirements was my appointmentService. I tested the appointment IDs, future appointments dates and valid descriptions for example 
+@Test
+public void testAddDuplicateAppointment() {
+    service.addAppointment(appointment);
+    assertThrows(IllegalArgumentException.class, () -> service.addAppointment(appointment));
+} 
+ii.	Defend the overall quality of your JUnit tests. In other words, how do you know your JUnit tests were effective based on the coverage percentage?
+The overall quality of my JUnit tests was high, as evidenced by the extensive coverage percentage and the range of scenarios covered.
+
+High Coverage: My tests covered the main functionality, including adding, updating, deleting, and retrieving objects.
+Exception Handling: I ensured that invalid inputs, such as duplicate IDs or past dates, were caught using assertThrows().
+Boundary Testing: I tested edge cases, such as maximum character limits for names and descriptions.
+@Test
+public void testAddTaskWithInvalidId() {
+    assertThrows(IllegalArgumentException.class, () ->
+        new Task(null, "Test Task", "Valid Description"));
+}
+b.	Describe your experience writing the JUnit tests.
+Writing JUnit tests involved ensuring correctness while balancing efficiency and clarity. I followed a Test-Driven Development (TDD) approach by writing tests alongside the implementation.
+i.	How did you ensure that your code was technically sound? Cite specific lines of code from your tests to illustrate.
+Validating Inputs: Ensuring IDs, names, and dates met constraints.
+Testing Exception Paths: Using assertThrows for invalid scenarios.
+Isolating Tests: Each test focused on one functionality without dependencies.
+@Test
+public void testPastAppointmentDate() {
+    assertThrows(IllegalArgumentException.class, () ->
+        new Appointment("98563", new Date(System.currentTimeMillis() - 86400000), "Past Event"));
+}
+ii.	How did you ensure that your code was efficient? Cite specific lines of code from your tests to illustrate.
+Minimizing Object Creation: Reusing common objects within tests.
+Assertions: Using assertEquals and assertThrows for precise validation.
+Efficient Setup: Initializing reusable objects in the @BeforeEach method.
+@BeforeEach
+public void setUp() {
+    taskService = new TaskService();
+    task = new Task("15988", "Test Task", "This is a test task.");
+    taskService.addTask(task);
+}
+2.	Reflection
+a.	Testing Techniques
+i.	What were the software testing techniques that you employed in this project? Describe their characteristics using specific details. The software testing techniques I used was Unit testing which focused on individual methods such as addAppointment and updatecontact 
+@Test
+public void testUpdateTaskName() {
+    taskService.updateTaskName("15988", "New Name");
+    assertEquals("New Name", taskService.getTask("15988").getName());
+}
+
+I also did boundary testing to test the ID limit, name and descriptions
+@Test
+public void testTaskNameTooLong() {
+    assertThrows(IllegalArgumentException.class, () ->
+        new Task("15988", "ThisNameIsWayTooLongForTheLimit", "Description"));
+}
+ii.	What are the other software testing techniques that you did not use for this project? Describe their characteristics using specific details. 
+The testing techniques I used was performance testing and integration testing. The integration testing was a test the interaction between multiple components or services. A example of this is testing an end to end workflow across different modules. The performance test was done to evaluates system responsiveness under load. A example of a performance test is a measuring response time for bulk task creation.
+
+iii.	For each of the techniques you discussed, explain the practical uses and implications for different software development projects and situations. The unit testing, integration testing and performance testing is what I used. Unit testing was Useful when developing individual components, like APIs or microservices. Integration testing helped ensures modules like user authentication and data storage work together and the performance test helped Identifies bottlenecks in web applications or APIs.
+
